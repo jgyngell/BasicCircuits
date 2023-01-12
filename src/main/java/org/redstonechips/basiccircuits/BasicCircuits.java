@@ -13,16 +13,15 @@ public class BasicCircuits extends CircuitLibrary {
     public Class[] getCircuitClasses() {
         return new Class[] { adder.class, and.class, clock.class, counter.class, demultiplexer.class, divider.class, flipflop.class,
                 multiplexer.class, multiplier.class, or.class, pisoregister.class, print.class, random.class, receiver.class,
-                shiftregister.class, transmitter.class, xor.class, decoder.class, encoder.class, pixel.class, pulse.class, not.class,
+                shiftregister.class, transmitter.class, xor.class, decoder.class, encoder.class, pulse.class, not.class,
                 synth.class, srnor.class, terminal.class, router.class, ringcounter.class, iptransmitter.class, ipreceiver.class,
                 comparator.class, delay.class, repeater.class, nand.class, nor.class, xnor.class, segdriver.class, dregister.class, 
-                sram.class, bintobcd.class, display.class, burst.class, ramwatch.class };
+                sram.class, bintobcd.class, burst.class, ramwatch.class, pixel.class };
     }
 
     @Override
     public void onRedstoneChipsEnable(RedstoneChips rc) {
         // add new pref keys.
         RCPrefs.registerCircuitPreference(iptransmitter.class, "ports", "25600..25699");
-        RCPrefs.registerCircuitPreference(pixel.class, "maxDistance", 7);
     }
 }

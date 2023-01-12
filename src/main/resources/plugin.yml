@@ -5,3 +5,4 @@ author: eisental
 description: Basic circuit library for RedstoneChips integrated circuits plugin.
 website: eisental.github.com/RedstoneChips
 depend: [RedstoneChips]
+api-version: 1.16

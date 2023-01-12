@@ -1,17 +1,21 @@
 BasicCircuits
 =============
 
-The basic circuit library for [RedstoneChips](http://eisental.github.com/RedstoneChips).
+The basic circuit library for [RedstoneChips](http://github.com/jgyngell/RedstoneChips).
 
 __For much more information, visit the [circuitdocs](http://eisental.github.com/RedstoneChips/circuitdocs).__
 
 Installation
 -------------
-* [Download](http://eisental.github.com/RedstoneChips) the latest RedstoneChips version bundle.
+* [Download](http://github.com/jgyngell/RedstoneChips) the latest RedstoneChips version bundle.
 * Copy all jar file to the plugins folder of your craftbukkit installation.
 
 Changelog
 ---------
+
+#### BasicCircuits 0.98 (12th January, 2023)
+- Updated to work with Spigot / PaperMC 1.17+
+- Changed to Gradle build systemm
 
 #### BasicCircuits 0.97 (28th April, 2013)
 - __pixel__: Added a maximum distance value preference to prevent lags and server crashes. The max can be changed using `/rcprefs pixel.maxDistance x` and defaults to 7.

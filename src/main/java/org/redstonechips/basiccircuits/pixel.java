@@ -3,7 +3,9 @@ package org.redstonechips.basiccircuits;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.bukkit.Material;
 import org.bukkit.DyeColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.redstonechips.RCPrefs;
@@ -16,7 +18,7 @@ import org.redstonechips.wireless.Receiver;
 
 public class pixel extends Circuit {
     private boolean indexedColor = false;
-    private byte[] colorIndex;
+    private Color[] colorIndex;
     private int distance = 3;
     private static final BlockFace[] faces = new BlockFace[] { BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST };
     
@@ -41,15 +43,15 @@ public class pixel extends Circuit {
         if (args.length>0) {
             String channelString = null;
 
-            List<Byte> colorList = new ArrayList<>();
+            List<Color> colorList = new ArrayList<>();
             for (int i=0; i<args.length; i++) {
                 try {
-                    colorList.add(DyeColor.valueOf(args[i].toUpperCase()).getData());
+                    colorList.add(DyeColor.valueOf(args[i].toUpperCase()).getColor());
                 } catch (IllegalArgumentException ie) {
                     // not dye color
                     try {
                         int val = Integer.decode(args[i]);
-                        colorList.add((byte)val);
+                        colorList.add(Color.fromRGB(val));//(byte)val);
                     } catch (NumberFormatException ne) {
                         // not dye number also, treat as broadcast channel if last or distance argument;
                         if ((args[i].startsWith("d{") || args[i].startsWith("dist{")) && args[i].endsWith("}")) {
@@ -73,7 +75,7 @@ public class pixel extends Circuit {
 
             // color index
             if (!colorList.isEmpty()) {
-                colorIndex = new byte[colorList.size()];
+                colorIndex = new Color[colorList.size()];
                 for (int i=0; i<colorList.size(); i++)
                     colorIndex[i] = colorList.get(i);
                 indexedColor = true;
@@ -122,7 +124,7 @@ public class pixel extends Circuit {
         if (inputlen<=1) val = (int)BooleanArrays.toUnsignedInt(bits);
         else val = (int)BooleanArrays.toUnsignedInt(bits, 1, bits.length-1);
 
-        byte color;
+        Color color;
 
         if (indexedColor) {
             int index = val;
@@ -132,11 +134,15 @@ public class pixel extends Circuit {
             }
             color = colorIndex[index];
         } else 
-            color = (byte)val;
+            color = Color.fromRGB(val);
 
-        if (chip.hasListeners()) debug("Setting pixel color to " + DyeColor.getByData(color));
-
-        for (Location l : colorBlocks) l.getBlock().setData(color);
+        if (chip.hasListeners()) debug("Setting pixel color to " + DyeColor.getByColor(color));
+	
+        for (Location l : colorBlocks) 
+	{
+		Material concreteMat = Material.valueOf(DyeColor.getByColor(color).name() + "_CONCRETE");
+		l.getBlock().setType(concreteMat);//.setData(color);
+	}
 
     }
 
@@ -147,11 +153,27 @@ public class pixel extends Circuit {
         for (BlockFace face : faces) {
             Location attached = Locations.getFace(curLocation, face);
             switch (attached.getBlock().getType()) {
-                case WOOL:
-                case STAINED_GLASS:
-                case STAINED_GLASS_PANE:
-                case STAINED_CLAY:
-                    if (!coloredBlocks.contains(attached) && !attached.equals(origin) && inCube(origin, attached, range))
+                //case WOOL:
+                //case STAINED_GLASS:
+                //case STAINED_GLASS_PANE:
+                //case STAINED_CLAY:
+		case WHITE_CONCRETE:
+		case ORANGE_CONCRETE:
+		case MAGENTA_CONCRETE:
+		case LIGHT_BLUE_CONCRETE:
+		case YELLOW_CONCRETE:
+		case LIME_CONCRETE:
+		case PINK_CONCRETE:
+		case GRAY_CONCRETE:
+		case LIGHT_GRAY_CONCRETE:
+		case CYAN_CONCRETE:
+		case PURPLE_CONCRETE:
+		case BLUE_CONCRETE:
+		case BROWN_CONCRETE:
+		case GREEN_CONCRETE:
+		case RED_CONCRETE:
+		case BLACK_CONCRETE:
+		    if (!coloredBlocks.contains(attached) && !attached.equals(origin) && inCube(origin, attached, range))
                         coloredBlocks.add(attached);
                     findColorBlocksAround(origin, attached, coloredBlocks, range, curDist);                   
             }

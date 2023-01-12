@@ -1,11 +1,13 @@
 package org.redstonechips.basiccircuits;
 
 import java.util.regex.Pattern;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.Material;
 import org.bukkit.Note;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.NoteBlock;
+import org.bukkit.Instrument;
+import org.bukkit.block.*;
+import org.bukkit.block.data.type.NoteBlock;
 import org.redstonechips.circuit.Circuit;
 import org.redstonechips.chip.io.InterfaceBlock;
 import org.redstonechips.util.BooleanArrays;
@@ -125,10 +127,12 @@ public class synth extends Circuit {
 
     private void tryToPlay(Block block, byte pitch) {
         if (block.getType()==Material.NOTE_BLOCK) {
-            NoteBlock n = (NoteBlock)block.getState();
             try {
-                n.setNote(new Note(pitch));
-                n.play();
+                //n.setNote(new Note(pitch));
+                //n.play();
+		for(Player on : Bukkit.getOnlinePlayers()) {
+			on.playNote(block.getLocation(), Instrument.PIANO, new Note(pitch));			
+		}
             } catch (NullPointerException npe) {}
         }
     }
